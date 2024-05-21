@@ -1,0 +1,25 @@
+﻿<Window x:Class="TrinhLekhoaWPF.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TrinhLekhoaWPF"
+        mc:Ignorable="d"
+        Title="Login" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Email:" Grid.Row="3" HorizontalAlignment="Right" Margin="0,134,574,-160"/>
+        <TextBox x:Name="EmailTextBox" Grid.Row="3" Margin="252,138,214,-156"/>
+
+        <Label Content="Password:" Grid.Row="3" HorizontalAlignment="Right" Margin="0,157,553,-183"/>
+        <PasswordBox x:Name="PasswordBox" Grid.Row="3" Margin="252,161,214,-179"/>
+
+        <Button Content="Login" Grid.Row="3" Margin="340,201,340,-221" Click="LoginButton_Click"/>
+    </Grid>
+</Window>
