@@ -11,5 +11,6 @@ namespace Services.Services.Interface
     public interface INewsArticleServices
     {
         Task<List<NewsArticleResponseDTO>> createReport(DateTime startDate, DateTime endDate);
+        Task<List<NewsArticleResponseDTO>> getAll();
     }
 }

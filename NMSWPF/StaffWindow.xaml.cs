@@ -23,10 +23,12 @@ namespace TrinhLekhoaWPF
     public partial class StaffWindow : Window
     {
         private readonly ICategoryServices _categoryServices;
+        private readonly INewsArticleServices _newsArticleServices;
         public StaffWindow()
         {
             InitializeComponent();
             _categoryServices = ((App)Application.Current).ServiceProvider.GetRequiredService<ICategoryServices>();
+            _newsArticleServices = ((App)Application.Current).ServiceProvider.GetRequiredService<INewsArticleServices>();
         }
 
         private void ManageCategoryButton_Click(object sender, RoutedEventArgs e)
@@ -37,7 +39,8 @@ namespace TrinhLekhoaWPF
 
         private void ManageNewsArticleButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var manageNewsArticle = new ManageNewsArticlePage(_newsArticleServices);
+            this.MainFrame.Content = manageNewsArticle;
         }
 
         private void ManageProfileButton_Click(object sender, RoutedEventArgs e)

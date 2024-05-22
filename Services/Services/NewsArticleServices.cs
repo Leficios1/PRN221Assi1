@@ -54,5 +54,32 @@ namespace Services.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<List<NewsArticleResponseDTO>> getAll()
+        {
+            try
+            {
+                var data = await _newsArticleRepository.GetAll();
+                var result = new List<NewsArticleResponseDTO>();
+                foreach (var item in data)
+                {
+                    var dto = _mapper.Map<NewsArticleResponseDTO>(item);
+                    var accountInfo = await _systemAccountRepository.GetById(item.CreatedById);
+                    dto.CreatedBy = accountInfo.AccountName;
+                    var categoryInfo = await _categoryRepository.GetById(item.CategoryId);
+                    dto.CategoryName = categoryInfo.CategoryName;
+
+                    result.Add(dto);
+                }
+                if (!data.Any())
+                {
+                    return null;
+                }
+                return result;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
