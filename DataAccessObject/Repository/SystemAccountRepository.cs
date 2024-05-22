@@ -27,7 +27,7 @@ namespace DataAccessObject.Repository
             return systemAccount;
         }
 
-        public async Task<bool> Delete(SystemAccount systemAccount)
+        public async Task<bool> DeleteAsync(SystemAccount systemAccount)
         {
             Delete(systemAccount);
             await SaveChangesAsync();
@@ -52,7 +52,7 @@ namespace DataAccessObject.Repository
             return db;
         }
 
-        public async Task<SystemAccount> Update(SystemAccount systemAccount)
+        public async Task<SystemAccount> UpdateAsync(SystemAccount systemAccount)
         {
             Update(systemAccount);
             await SaveChangesAsync();

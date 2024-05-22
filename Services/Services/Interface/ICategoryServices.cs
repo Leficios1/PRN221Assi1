@@ -1,5 +1,4 @@
 ﻿using BusinessObject.Model;
-using Services.DTO.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Services.Services.Interface
 {
-    public interface INewsArticleServices
+    public interface ICategoryServices
     {
-        Task<List<NewsArticleResponseDTO>> createReport(DateTime startDate, DateTime endDate);
+        Task<List<Category>> getAllAsync();
     }
 }

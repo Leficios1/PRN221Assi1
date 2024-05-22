@@ -52,7 +52,8 @@ namespace TrinhLekhoaWPF
 
             if (await _systemAccountServices.Login(email, password))
             {
-                MessageBox.Show("User Login Successful");
+                MessageBox.Show("Staff Login Successful");
+                var accountName = await _systemAccountServices.getAccountName(email);
                 var staffWindow = new StaffWindow();
                 staffWindow.Show();
                 this.Close();

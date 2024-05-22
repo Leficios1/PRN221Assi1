@@ -14,6 +14,7 @@ namespace Services.Services.Interface
         Task<List<SystemAccountResponseDTO>> getAllAsync();
         Task<SystemAccountResponseDTO?> createAccount(SystemAccountRequestDTO dto);
         Task<SystemAccountResponseDTO?> updateAccount(SystemAccountRequestDTO dto);
-        Task<bool> deleteAccount(int id);
+        Task<bool> deleteAccount(short id);
+        Task<string> getAccountName(string email);
     }
 }

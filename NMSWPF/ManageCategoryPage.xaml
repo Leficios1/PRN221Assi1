@@ -1,0 +1,53 @@
+﻿<Page x:Class="TrinhLekhoaWPF.ManageCategoryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TrinhLekhoaWPF"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ManageCategoryPage">
+
+    <Grid Background="AliceBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Label Content="Manage Categories" FontSize="24" FontWeight="Bold" Foreground="#FF1976D2" />
+        </StackPanel>
+
+        <DataGrid x:Name="CategoryDataGrid" Grid.Row="1" Margin="20" AutoGenerateColumns="False" CanUserAddRows="False" RowHeight="40" SelectionChanged="CategoryDataGrid_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Category ID" Binding="{Binding CategoryId}" Width="Auto" />
+                <DataGridTextColumn Header="Category Name" Binding="{Binding CategoryName}" Width="*" />
+                <DataGridTextColumn Header="Category Description" Binding="{Binding CategoryDesciption}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid Grid.Row="2" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Content="Create" Click="CreateCategory_Click" Margin="53,0,227,0" />
+            <Button Content="Update" Click="UpdateCategory_Click" Margin="240,0,40,0" />
+            <Button Content="Delete" Click="DeleteCategory_Click" Margin="61,0,219,0" Grid.Column="1" />
+            <Button Content="Close" Click="CloseWindow_Click" Grid.Column="1" Margin="258,0,22,0" Height="20" VerticalAlignment="Top" />
+        </Grid>
+    </Grid>
+
+    <Page.Resources>
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Background" Value="#FF1976D2" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+    </Page.Resources>
+</Page>

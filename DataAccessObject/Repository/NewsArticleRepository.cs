@@ -25,6 +25,14 @@ namespace DataAccessObject.Repository
             return db;
         }
 
+        public async Task<List<NewsArticle>> getByDate(DateTime startDate, DateTime endDate)
+        {
+            var db = await _context.NewsArticles.Where(n => n.CreatedDate >= startDate && n.CreatedDate <= endDate)
+                                                .OrderByDescending(n => n.CreatedDate)
+                                                .ToListAsync();       
+            return db;
+        }
+
         public async Task<bool> getBySystemAccountId(int id)
         {
             var newsArticle = await _context.NewsArticles

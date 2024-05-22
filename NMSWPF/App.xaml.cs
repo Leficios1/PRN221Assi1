@@ -34,10 +34,13 @@ namespace NMSWPF
         {
             //Register Services here
             services.AddSingleton<ISystemAccountServices, SystemAccountServices>();
+            services.AddSingleton<INewsArticleServices, NewsArticleServices>();
+            services.AddSingleton<ICategoryServices, CategoryServices>();
             //Register Repository here
             services.AddSingleton(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddSingleton<ISystemAccountRepository, SystemAccountRepository>();
             services.AddSingleton<INewsArticleRepository, NewsArticleRepository>();
+            services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
             //Register DBcontext
             services.AddDbContext<FunewsManagementDbContext>(options =>
@@ -69,8 +72,12 @@ namespace NMSWPF
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            var staffWindow = new StaffWindow();
+            var adminWindow = new AdminWindow();
             var loginWindow = new Login(adminAccount);
-            loginWindow.Show();
+            //adminWindow.Show();
+            staffWindow.Show();
+            //loginWindow.Show();
         }
     }
 }

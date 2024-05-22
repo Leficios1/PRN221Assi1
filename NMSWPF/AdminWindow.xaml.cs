@@ -24,10 +24,13 @@ namespace TrinhLekhoaWPF
     public partial class AdminWindow : Window
     {
         private readonly ISystemAccountServices _systemaccountServices;
+        private readonly INewsArticleServices _newsArticleServices;
+
         public AdminWindow()
         {
             InitializeComponent();
             _systemaccountServices = ((App)Application.Current).ServiceProvider.GetRequiredService<ISystemAccountServices>();
+            _newsArticleServices = ((App)Application.Current).ServiceProvider.GetRequiredService<INewsArticleServices>();
         }
 
         private void MainFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
@@ -42,7 +45,12 @@ namespace TrinhLekhoaWPF
 
         private void CreateReportButton_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new CreateReportPage());
+            MainFrame.Navigate(new CreateReportPage(_newsArticleServices));
+        }
+
+        private void MainFrame_Navigated_1(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+
         }
     }
 }

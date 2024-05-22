@@ -8,7 +8,7 @@ namespace Services.DTO.Request
 {
     public class SystemAccountRequestDTO
     {
-        public int AccountId { get; set; }
+        public short AccountId { get; set; }
         public string AccountName { get; set; } = null!;
 
         public string AccountEmail { get; set; } = null!;

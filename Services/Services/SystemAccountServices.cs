@@ -47,7 +47,7 @@ namespace Services.Services
             }
         }
 
-        public async Task<bool> deleteAccount(int id)
+        public async Task<bool> deleteAccount(short id)
         {
             try
             {
@@ -60,12 +60,18 @@ namespace Services.Services
                 {
                     return false;
                 }
-                await _systemAccountRepository.Delete(account);
+                await _systemAccountRepository.DeleteAsync(account);
                 return true;
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public async Task<string> getAccountName(string email)
+        {
+            var data = await _systemAccountRepository.FindOne(x => x.AccountEmail.Equals(email));
+            return data.AccountName;
         }
 
         public async Task<List<SystemAccountResponseDTO>> getAllAsync()
@@ -104,12 +110,12 @@ namespace Services.Services
             try
             {
                 var account = await _systemAccountRepository.GetById(dto.AccountId);
-                if(account == null)
+                if (account == null)
                 {
                     return null;
                 }
                 _mapper.Map(dto, account);
-                await _systemAccountRepository.Update(account);
+                await _systemAccountRepository.UpdateAsync(account);
                 await _systemAccountRepository.SaveChangesAsync();
                 
                 var result = _mapper.Map<SystemAccountResponseDTO>(account);

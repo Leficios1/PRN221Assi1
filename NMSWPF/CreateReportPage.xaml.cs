@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Services.Services.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,22 @@ namespace TrinhLekhoaWPF
     /// </summary>
     public partial class CreateReportPage : Page
     {
-        public CreateReportPage()
+        private readonly INewsArticleServices _newsArticleServices;
+
+        public CreateReportPage(INewsArticleServices newsArticleServices)
         {
             InitializeComponent();
+            _newsArticleServices = newsArticleServices;
+        }
+
+        private async void GenerateReport_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime startDate = StartDatePicker.SelectedDate ?? DateTime.MinValue;
+            DateTime endDate = EndDatePicker.SelectedDate ?? DateTime.MaxValue;
+
+            var data = await _newsArticleServices.createReport(startDate, endDate);
+
+            ReportDataGrid.ItemsSource = data;
         }
     }
 }

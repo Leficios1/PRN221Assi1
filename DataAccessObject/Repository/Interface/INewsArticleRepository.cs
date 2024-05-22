@@ -11,5 +11,6 @@ namespace DataAccessObject.Repository.Interface
     {
         public Task<List<NewsArticle>> GetAll();
         public Task<bool> getBySystemAccountId(int id);
+        public Task<List<NewsArticle>> getByDate(DateTime startDate, DateTime endDate);
     }
 }
