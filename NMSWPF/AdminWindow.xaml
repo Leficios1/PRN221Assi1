@@ -23,20 +23,28 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button Content="Manage Account"
                     Click="ManageAccountButton_Click"
-                    Margin="195,5,5,5"
+                    Margin="125,5,10,5"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
                     Padding="5" />
             <Button Content="Create Report"
                     Click="CreateReportButton_Click"
-                    Margin="48,5,166,5"
+                    Margin="88,5,47,5"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
                     Padding="5"
                     Grid.Column="1" />
+            <Button Content="Logout"
+                    Click="Logout_Click"
+                    Margin="62,5,98,5"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="5"
+                    Grid.Column="2" />
         </Grid>
         <Frame x:Name="MainFrame"
                Grid.Row="2"

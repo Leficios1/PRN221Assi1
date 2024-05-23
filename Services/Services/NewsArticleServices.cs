@@ -2,6 +2,7 @@
 using BusinessObject.Model;
 using DataAccessObject.Repository;
 using DataAccessObject.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using Services.DTO.Response;
 using Services.Services.Interface;
 using System;
@@ -49,7 +50,8 @@ namespace Services.Services
                     return null;
                 }
                 return reportData;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -76,7 +78,33 @@ namespace Services.Services
                     return null;
                 }
                 return result;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<List<NewsArticleResponseDTO>> getByAccountId(short id)
+        {
+            try
+            {
+                var data = await _newsArticleRepository.Get().Where(x => x.CategoryId == id).ToListAsync();
+                var result = new List<NewsArticleResponseDTO>();
+                if (!data.Any())
+                {
+                    return null;
+                }
+                foreach (var item in data)
+                {
+                    var mapper = _mapper.Map<NewsArticleResponseDTO>(item);
+                    var categoryInfo = await _categoryRepository.GetById(item.CategoryId);
+                    mapper.CategoryName = categoryInfo.CategoryName;
+                    result.Add(mapper);
+                }
+                return result;
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

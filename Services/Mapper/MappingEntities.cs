@@ -17,6 +17,8 @@ namespace Services.Mapper
             CreateMap<SystemAccountResponseDTO, SystemAccount>().ReverseMap();
             CreateMap<SystemAccountRequestDTO, SystemAccount>().ReverseMap();
             CreateMap<NewsArticleResponseDTO, NewsArticle>().ReverseMap();
+            CreateMap<CategoryRequestDTO, Category>().ReverseMap();
+            CreateMap<CategoryUpdateRequestDTO, Category>().ReverseMap();
         }
     }
 }

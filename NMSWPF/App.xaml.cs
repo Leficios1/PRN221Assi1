@@ -69,15 +69,20 @@ namespace NMSWPF
             //Read Infor of Admin
             adminAccount = Configuration.GetSection("AdminAccount").Get<AdminAccount>();
         }
+        public static void Restart()
+        {
+            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
+        }
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            var staffWindow = new StaffWindow();
+            //var staffWindow = new StaffWindow();
             var adminWindow = new AdminWindow();
             var loginWindow = new Login(adminAccount);
             //adminWindow.Show();
-            staffWindow.Show();
-            //loginWindow.Show();
+            //staffWindow.Show();
+            loginWindow.Show();
         }
     }
 }

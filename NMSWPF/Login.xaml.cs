@@ -5,6 +5,7 @@ using Services.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -41,6 +42,11 @@ namespace TrinhLekhoaWPF
             var email = EmailTextBox.Text;
             var password = PasswordBox.Password;
 
+            if (email == null || password == null)
+            {
+                MessageBox.Show("Please input data in field Email and Password");
+            }
+
             if (_adminAccount.Email.Equals(email) && _adminAccount.Password.Equals(password))
             {
                 MessageBox.Show("Admin Login Successful");
@@ -53,8 +59,8 @@ namespace TrinhLekhoaWPF
             if (await _systemAccountServices.Login(email, password))
             {
                 MessageBox.Show("Staff Login Successful");
-                var accountName = await _systemAccountServices.getAccountName(email);
-                var staffWindow = new StaffWindow();
+                var accountInfo = await _systemAccountServices.getAccountInfoByEmail(email);
+                var staffWindow = new StaffWindow(accountInfo);
                 staffWindow.Show();
                 this.Close();
             }
@@ -66,6 +72,11 @@ namespace TrinhLekhoaWPF
 
 
         private void EmailTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void Button_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
 
         }

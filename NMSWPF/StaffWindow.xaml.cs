@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AutoMapper;
+using BusinessObject.Model;
+using Microsoft.Extensions.DependencyInjection;
 using NMSWPF;
+using Services.DTO.Response;
 using Services.Services.Interface;
 using System;
 using System.Collections.Generic;
@@ -24,11 +27,23 @@ namespace TrinhLekhoaWPF
     {
         private readonly ICategoryServices _categoryServices;
         private readonly INewsArticleServices _newsArticleServices;
-        public StaffWindow()
+        private readonly ISystemAccountServices _systemAccountServices;
+        private readonly SystemAccount _systemAccount;
+        private readonly IMapper _mapper;
+        private readonly AdminAccount _adminAccount;
+        public StaffWindow(SystemAccount systemAccount)
         {
             InitializeComponent();
             _categoryServices = ((App)Application.Current).ServiceProvider.GetRequiredService<ICategoryServices>();
             _newsArticleServices = ((App)Application.Current).ServiceProvider.GetRequiredService<INewsArticleServices>();
+            _systemAccountServices = ((App)Application.Current).ServiceProvider.GetRequiredService<ISystemAccountServices>();
+            _systemAccount = systemAccount;
+            LoadAccountName(systemAccount.AccountName);
+        }
+
+        public void LoadAccountName(string accountName)
+        {
+            LabelContent.Content = "Welcome Back, " + accountName + ". What do you want to do?";
         }
 
         private void ManageCategoryButton_Click(object sender, RoutedEventArgs e)
@@ -45,12 +60,21 @@ namespace TrinhLekhoaWPF
 
         private void ManageProfileButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var manageAccountProfile = new ManageStaffAccountPage(_systemAccountServices,_systemAccount);
+            this.MainFrame.Content = manageAccountProfile;
         }
 
         private void ViewHistory_Click(object sender, RoutedEventArgs e)
         {
+            var newsHistory = new NewsHistoryPage(_newsArticleServices, _systemAccount);
+            this.MainFrame.Content = newsHistory;
+        }
 
+        private void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            var loginWindow = new Login(((App)Application.Current).adminAccount);
+            loginWindow.Show();
+            this.Close();
         }
     }
 }

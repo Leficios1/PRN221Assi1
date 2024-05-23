@@ -52,5 +52,12 @@ namespace TrinhLekhoaWPF
         {
 
         }
+
+        private void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            var loginWindow = new Login(((App)Application.Current).adminAccount);
+            loginWindow.Show();
+            this.Close();
+        }
     }
 }

@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-            <Label Content="Welcome Back, Staff" FontSize="24" FontWeight="Bold" Foreground="#FF1976D2" />
+            <Label x:Name="LabelContent" Content="Welcome Back, Staff" FontSize="24" FontWeight="Bold" Foreground="#FF1976D2" />
             <Label x:Name="AccountName" Content="" FontSize="20" Foreground="#FF1976D2" Margin="10,0,0,0" />
         </StackPanel>
 
@@ -25,11 +25,13 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button Content="Manage Category" Click="ManageCategoryButton_Click" />
-            <Button Content="Manage News Article" Click="ManageNewsArticleButton_Click" Grid.Column="1" Grid.ColumnSpan="2" Margin="54,0,118,0" />
-            <Button Content="Manage Profile" Click="ManageProfileButton_Click" Grid.Column="2" Grid.ColumnSpan="2" Margin="117,0,55,0" />
-            <Button Content="View History" Click="ViewHistory_Click" Grid.Column="4" Margin="10,0,-10,0" />
+            <Button Content="Manage News Article" Click="ManageNewsArticleButton_Click" Grid.Column="1" Grid.ColumnSpan="2" Margin="48,0,0,0" HorizontalAlignment="Left" Width="115" />
+            <Button Content="Manage Profile" Click="ManageProfileButton_Click" Grid.Column="2" Grid.ColumnSpan="2" Margin="58,0,113,0" />
+            <Button Content="View History" Click="ViewHistory_Click" Grid.Column="3" Margin="89,0,54,0" Grid.ColumnSpan="2" />
+            <Button Content="Logout" Click="Logout_Click" Grid.Column="4" Margin="134,0,10,0" Grid.ColumnSpan="2" />
         </Grid>
         <Frame x:Name="MainFrame" Grid.Row="2" NavigationUIVisibility="Hidden" Margin="20" />
     </Grid>

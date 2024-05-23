@@ -68,6 +68,12 @@ namespace Services.Services
             }
         }
 
+        public async Task<SystemAccount> getAccountInfoByEmail(string email)
+        {
+            var data = await _systemAccountRepository.FindOne(x => x.AccountEmail.Equals(email));
+            return data;
+        }
+
         public async Task<string> getAccountName(string email)
         {
             var data = await _systemAccountRepository.FindOne(x => x.AccountEmail.Equals(email));

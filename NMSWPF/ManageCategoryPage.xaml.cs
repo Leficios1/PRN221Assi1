@@ -1,4 +1,5 @@
-﻿using DataAccessObject.Repository.Interface;
+﻿using BusinessObject.Model;
+using DataAccessObject.Repository.Interface;
 using Services.Services.Interface;
 using System;
 using System.Collections.Generic;
@@ -27,17 +28,51 @@ namespace TrinhLekhoaWPF
         {
             InitializeComponent();
             _categoryServices = categoryServices;
-            LoadCategory();
+            Loaded += ManageCategoriesPage_Loaded;
         }
 
-        private async void LoadCategory()
+        private async void ManageCategoriesPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            await LoadCategory();
+        }
+
+        public async Task LoadCategory()
         {
             var category = await _categoryServices.getAllAsync();
             CategoryDataGrid.ItemsSource = category;
         }
-        private void DeleteCategory_Click(object sender, RoutedEventArgs e)
+        private async void DeleteCategory_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                var selectCategory = (Category)CategoryDataGrid.SelectedItem;
+                if (selectCategory != null)
+                {
+                    var result = MessageBox.Show("Are you sure you want to delete this Category?", "Confirm Delete",
+                                  MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        var check = await _categoryServices.deleteCategory(selectCategory.CategoryId);
+                        if (check == true)
+                        {
+                            await LoadCategory();
+                            MessageBox.Show("Category deleted successfully!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("This Category has News Articles!!!");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select a category to delete.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void CloseWindow_Click(object sender, RoutedEventArgs e)
@@ -53,12 +88,22 @@ namespace TrinhLekhoaWPF
 
         private void UpdateCategory_Click(object sender, RoutedEventArgs e)
         {
-
+            var selectCategory = (Category)CategoryDataGrid.SelectedItem;
+            if (selectCategory != null)
+            {
+                var updateCategoryPage = new CreateCategoryPage(_categoryServices, this, selectCategory);
+                this.NavigationService.Navigate(updateCategoryPage);
+            }
+            else
+            {
+                MessageBox.Show("Please select Category want to update!!");
+            }
         }
 
         private void CreateCategory_Click(object sender, RoutedEventArgs e)
         {
-
+            var createCategory = new CreateCategoryPage(_categoryServices, this);
+            this.NavigationService.Navigate(createCategory);
         }
 
         private void CategoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)

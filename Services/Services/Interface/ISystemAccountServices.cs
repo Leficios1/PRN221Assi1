@@ -1,4 +1,5 @@
-﻿using Services.DTO.Request;
+﻿using BusinessObject.Model;
+using Services.DTO.Request;
 using Services.DTO.Response;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,6 @@ namespace Services.Services.Interface
         Task<SystemAccountResponseDTO?> updateAccount(SystemAccountRequestDTO dto);
         Task<bool> deleteAccount(short id);
         Task<string> getAccountName(string email);
+        Task<SystemAccount> getAccountInfoByEmail(string email);
     }
 }

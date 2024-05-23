@@ -12,5 +12,6 @@ namespace Services.Services.Interface
     {
         Task<List<NewsArticleResponseDTO>> createReport(DateTime startDate, DateTime endDate);
         Task<List<NewsArticleResponseDTO>> getAll();
+        Task<List<NewsArticleResponseDTO>> getByAccountId(short id);
     }
 }
