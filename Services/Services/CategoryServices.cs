@@ -94,6 +94,18 @@ namespace Services.Services
             }
         }
 
+        public async Task<short> getCategoryIdByCaetegoryName(string name)
+        {
+            try
+            {
+                var data = await _categoryRepository.Get().Where(c => c.CategoryName.Equals(name)).SingleOrDefaultAsync();
+                return data.CategoryId;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<Category> updateCategory(CategoryUpdateRequestDTO dto)
         {
             try

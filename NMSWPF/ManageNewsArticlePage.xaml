@@ -33,9 +33,24 @@
                 <DataGridTextColumn Header="Title" Binding="{Binding NewsTitle}" Width="*" />
                 <DataGridTextColumn Header="Created Date" Binding="{Binding CreatedDate}" Width="SizeToHeader" />
                 <DataGridTextColumn Header="Category" Binding="{Binding CategoryName}" Width="SizeToHeader" />
-                <DataGridCheckBoxColumn Header="Status" Binding="{Binding NewsStatus}" Width="SizeToHeader" />
+                <DataGridTextColumn Header="Status" Binding="{Binding NewsStatus}" Width="SizeToHeader" />
                 <DataGridTextColumn Header="Created By" Binding="{Binding CreatedBy}" Width="SizeToHeader" />
                 <DataGridTextColumn Header="Modified Date" Binding="{Binding ModifiedDate}" Width="SizeToHeader" />
+                <DataGridTemplateColumn Header="Tags" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ItemsControl ItemsSource="{Binding Tags}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="Gray" BorderThickness="1" Padding="2" Margin="2" CornerRadius="2">
+                                            <TextBlock Text="{Binding TagName}" />
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 

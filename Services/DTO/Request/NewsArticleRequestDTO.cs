@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.DTO.Response
+namespace Services.DTO.Request
 {
-    public class NewsArticleResponseDTO
+    public class NewsArticleRequestDTO
     {
         public string NewsArticleId { get; set; } = null!;
 
@@ -17,13 +17,13 @@ namespace Services.DTO.Response
 
         public string? NewsContent { get; set; }
 
-        public string CategoryName { get; set; } = null!;
+        public short CategoryId { get; set; }
 
-        public string NewsStatus { get; set; } = null!;
+        public bool NewsStatus { get; set; }
 
-        public string CreatedBy { get; set; } = null!;
+        public short CreatedById { get; set; }
 
         public DateTime? ModifiedDate { get; set; }
-        public List<Tag>? Tags { get; set; } 
+        public List<int>? Tags { get; set; }
     }
 }

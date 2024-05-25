@@ -1,4 +1,7 @@
-﻿using Services.Services.Interface;
+﻿using BusinessObject.Model;
+using Services.DTO.Request;
+using Services.DTO.Response;
+using Services.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +29,14 @@ namespace TrinhLekhoaWPF
         {
             InitializeComponent();
             _newsArticleServices = newsArticleServices;
-            LoadNewsArticle();
+            Loaded += ManagenewsArticlePage_Load;  
+        }
+        private async void ManagenewsArticlePage_Load(object sender, RoutedEventArgs e)
+        {
+            await LoadNewsArticle();
         }
 
-        private async void LoadNewsArticle()
+        public async Task LoadNewsArticle()
         {
             try
             {
@@ -48,12 +55,22 @@ namespace TrinhLekhoaWPF
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var createNewsArticle = new CreateNewsArticlePage(_newsArticleServices, this);
+            this.NavigationService.Navigate(createNewsArticle);
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var selectNewArticle = (NewsArticleResponseDTO)NewsArticlesDataGrid.SelectedItem;
+            if (selectNewArticle != null)
+            {
+                var updateNewsArticle = new CreateNewsArticlePage(_newsArticleServices,this);
+                this.NavigationService.Navigate(updateNewsArticle);
+            }
+            else
+            {
+                MessageBox.Show("Please select News Article want to update!!!");
+            }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)

@@ -14,5 +14,6 @@ namespace Services.Services.Interface
         Task<Category?> createCategory(CategoryRequestDTO dto);
         Task<Category> updateCategory(CategoryUpdateRequestDTO dto);
         Task<bool> deleteCategory(short Id);
+        Task<short> getCategoryIdByCaetegoryName(string name);
     }
 }

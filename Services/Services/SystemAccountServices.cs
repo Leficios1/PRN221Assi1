@@ -2,6 +2,7 @@
 using BusinessObject.Model;
 using DataAccessObject.Repository;
 using DataAccessObject.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using Services.DTO.Request;
 using Services.DTO.Response;
 using Services.Services.Interface;
@@ -62,6 +63,18 @@ namespace Services.Services
                 }
                 await _systemAccountRepository.DeleteAsync(account);
                 return true;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<short> getAccountIdByAccountName(string name)
+        {
+            try
+            {
+                var data = await _systemAccountRepository.Get().Where(a => a.AccountName.Equals(name)).SingleOrDefaultAsync();
+                return data.AccountId;
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);

@@ -18,5 +18,6 @@ namespace Services.Services.Interface
         Task<bool> deleteAccount(short id);
         Task<string> getAccountName(string email);
         Task<SystemAccount> getAccountInfoByEmail(string email);
+        Task<short> getAccountIdByAccountName(string name);
     }
 }
