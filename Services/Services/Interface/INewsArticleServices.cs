@@ -20,5 +20,8 @@ namespace Services.Services.Interface
         Task<string> getCreateNameByCreateId(short? Id);
         Task<List<Category>> GetAllCategories();
         Task<NewsArticle?> getById(string id);
+        Task<bool> deleteNewsArticle(string id);
+        Task<List<NewsArticleResponseDTO>> search(string? data);
+
     }
 }

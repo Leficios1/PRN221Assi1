@@ -46,8 +46,9 @@
 
         <Label Content="Tag:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" />
         <StackPanel Grid.Row="7" Grid.Column="1" Margin="5">
-            <ComboBox x:Name="TagComboBox" Width="200" Margin="5"/>
-            <ListBox x:Name="SelectedTagsListBox" Width="200" Height="100" Margin="5" />
+            <ComboBox x:Name="TagComboBox" Width="200" Margin="5"
+                      DisplayMemberPath="TagName" SelectedValuePath="TagId"/>
+            <ListBox x:Name="SelectedTagsListBox" DisplayMemberPath="TagName" Width="200" Height="100" Margin="5" />
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />

@@ -43,9 +43,17 @@ namespace TrinhLekhoaWPF
             }
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                var search = SearchTextBox.Text;
+                var result = await _newsArticleServices.search(search);
+                NewsArticlesDataGrid.ItemsSource = result;
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void NewsArticlesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)

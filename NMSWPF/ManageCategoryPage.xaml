@@ -32,10 +32,9 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Content="Create" Click="CreateCategory_Click" Margin="53,0,227,0" />
-            <Button Content="Update" Click="UpdateCategory_Click" Margin="240,0,40,0" />
-            <Button Content="Delete" Click="DeleteCategory_Click" Margin="61,0,219,0" Grid.Column="1" />
-            <Button Content="Close" Click="CloseWindow_Click" Grid.Column="1" Margin="258,0,22,0" Height="20" VerticalAlignment="Top" />
+            <Button Content="Create" Click="CreateCategory_Click" Margin="90,0,190,0" />
+            <Button Content="Update" Click="UpdateCategory_Click" Margin="330,0,330,0" Grid.ColumnSpan="2" />
+            <Button Content="Delete" Click="DeleteCategory_Click" Margin="190,0,90,0" Grid.Column="1" />
         </Grid>
     </Grid>
 

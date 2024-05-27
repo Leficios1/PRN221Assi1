@@ -41,7 +41,7 @@ namespace Services.Services
                     return false;
                 }
                 var mapper = _mapper.Map<NewsArticle>(dto);
-                if(dto.Tags != null && dto.Tags.Any())
+                if (dto.Tags != null && dto.Tags.Any())
                 {
                     var tag = await _tagRepository.Get().Where(t => dto.Tags.Contains(t.TagId)).ToListAsync();
                     if (tag != null)
@@ -52,7 +52,8 @@ namespace Services.Services
                 await _newsArticleRepository.AddAsync(mapper);
                 await _newsArticleRepository.SaveChangesAsync();
                 return true;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -115,7 +116,7 @@ namespace Services.Services
                 {
                     return null;
                 }
-                return result;
+                return result.OrderBy(x => x.NewsArticleId).ToList();
             }
             catch (Exception ex)
             {
@@ -154,7 +155,8 @@ namespace Services.Services
             {
                 var data = await _categoryRepository.GetAll();
                 return data;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -165,7 +167,7 @@ namespace Services.Services
             try
             {
                 var data = await _systemAccountRepository.GetById(Id);
-                if(data != null)
+                if (data != null)
                 {
                     return data.AccountName;
                 }
@@ -173,7 +175,8 @@ namespace Services.Services
                 {
                     return "Not Found ID Account";
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -211,14 +214,71 @@ namespace Services.Services
             try
             {
                 var data = await _newsArticleRepository.GetById(id);
-                if(data == null)
+                if (data == null)
                 {
                     return null;
                 }
                 return data;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}", ex);
+            }
+        }
+
+        public async Task<bool> deleteNewsArticle(string id)
+        {
+            try
+            {
+                var data = await _newsArticleRepository.GetById(id);
+                if (data == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    _newsArticleRepository.Delete(data);
+                    await _newsArticleRepository.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<List<NewsArticleResponseDTO>> search(string? data)
+        {
+            try
+            {
+                var result = await _newsArticleRepository.Get().Where(n => n.NewsContent.ToUpper().Contains(data.ToUpper())
+                                   || n.NewsTitle.ToUpper().Contains(data.ToUpper())).ToListAsync();
+
+                var response = new List<NewsArticleResponseDTO>();
+                foreach (var item in result)
+                {
+                    var dto = _mapper.Map<NewsArticleResponseDTO>(item);
+                    var accountInfo = await _systemAccountRepository.GetById(item.CreatedById);
+                    dto.CreatedBy = accountInfo.AccountName;
+                    var categoryInfo = await _categoryRepository.GetById(item.CategoryId);
+                    dto.CategoryName = categoryInfo.CategoryName;
+                    if (item.NewsStatus == true)
+                    {
+                        dto.NewsStatus = "Active";
+                    }
+                    else
+                    {
+                        dto.NewsStatus = "InActive";
+                    }
+                    var tag = await _tagRepository.Get().Where(t => t.NewsArticles.Any(n => n.NewsArticleId == item.NewsArticleId)).ToListAsync();
+                    dto.Tags = tag;
+                    response.Add(dto);
+                }
+                return response;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }

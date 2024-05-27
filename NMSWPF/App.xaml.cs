@@ -36,11 +36,13 @@ namespace NMSWPF
             services.AddSingleton<ISystemAccountServices, SystemAccountServices>();
             services.AddSingleton<INewsArticleServices, NewsArticleServices>();
             services.AddSingleton<ICategoryServices, CategoryServices>();
+            services.AddSingleton<ITagServices, TagServices>(); 
             //Register Repository here
             services.AddSingleton(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddSingleton<ISystemAccountRepository, SystemAccountRepository>();
             services.AddSingleton<INewsArticleRepository, NewsArticleRepository>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
+            services.AddSingleton<ITagRepository, TagRepository>();
 
             //Register DBcontext
             services.AddDbContext<FunewsManagementDbContext>(options =>

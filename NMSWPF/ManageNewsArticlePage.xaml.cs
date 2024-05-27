@@ -29,7 +29,7 @@ namespace TrinhLekhoaWPF
         {
             InitializeComponent();
             _newsArticleServices = newsArticleServices;
-            Loaded += ManagenewsArticlePage_Load;  
+            Loaded += ManagenewsArticlePage_Load;
         }
         private async void ManagenewsArticlePage_Load(object sender, RoutedEventArgs e)
         {
@@ -42,29 +42,40 @@ namespace TrinhLekhoaWPF
             {
                 var data = await _newsArticleServices.getAll();
                 NewsArticlesDataGrid.ItemsSource = data;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                var search = SearchTextBox.Text;
+                var result = await _newsArticleServices.search(search);
+                NewsArticlesDataGrid.ItemsSource = result;
+            }catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
-        private void CreateButton_Click(object sender, RoutedEventArgs e)
+        private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             var createNewsArticle = new CreateNewsArticlePage(_newsArticleServices, this);
+            await createNewsArticle.LoadCategoryAndTag();
             this.NavigationService.Navigate(createNewsArticle);
         }
 
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        private async void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             var selectNewArticle = (NewsArticleResponseDTO)NewsArticlesDataGrid.SelectedItem;
             if (selectNewArticle != null)
             {
-                var updateNewsArticle = new CreateNewsArticlePage(_newsArticleServices,this);
+                var updateNewsArticle = new CreateNewsArticlePage(_newsArticleServices, this, selectNewArticle);
+                await updateNewsArticle.LoadCategoryAndTag();
                 this.NavigationService.Navigate(updateNewsArticle);
             }
             else
@@ -73,9 +84,33 @@ namespace TrinhLekhoaWPF
             }
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                var selectDeletedNewsArticle = (NewsArticleResponseDTO)NewsArticlesDataGrid.SelectedItem;
+                if (selectDeletedNewsArticle != null)
+                {
+                    var result = MessageBox.Show("Are you sure you want to delete this Category?", "Confirm Delete",
+                                 MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        var flag = await _newsArticleServices.deleteNewsArticle(selectDeletedNewsArticle.NewsArticleId);
+                        if(flag == true)
+                        {
+                            await LoadNewsArticle();
+                            MessageBox.Show("Deleted Succesfully");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Not Found ID");
+                        }
+                    }
+                }
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void NewsArticlesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -34,6 +34,7 @@ namespace TrinhLekhoaWPF
         private readonly ISystemAccountServices _systemAccountServices;
         private readonly ICategoryServices _categoryServices;
         private readonly ManageNewsArticlePage _manageNewsArticlePage;
+        private readonly ITagServices _tagServices;
         public CreateNewsArticlePage(INewsArticleServices newsArticleServices, ManageNewsArticlePage manageNewsArticlePage, NewsArticleResponseDTO newsArticle = null)
         {
             InitializeComponent();
@@ -41,57 +42,48 @@ namespace TrinhLekhoaWPF
             _newsArticletoUpdate = newsArticle;
             _systemAccountServices = ((App)Application.Current).ServiceProvider.GetRequiredService<ISystemAccountServices>();
             _categoryServices = ((App)Application.Current).ServiceProvider.GetRequiredService<ICategoryServices>();
+            _tagServices = ((App)Application.Current).ServiceProvider.GetRequiredService<ITagServices>();
             _manageNewsArticlePage = manageNewsArticlePage;
-
-            LoadCategory();
 
             if (_newsArticletoUpdate != null)
             {
+                GetDataToUpdate(_newsArticletoUpdate);
+            }
+            _selectedTags ??= new ObservableCollection<Tag>();
+            SelectedTagsListBox.ItemsSource = _selectedTags;
+        }
+
+        public async Task LoadCategoryAndTag()
+        {
+            var categoryTask = _newsArticleServices.GetAllCategories();
+            var tagTask = _tagServices.getAllAsync();
+            
+            await Task.WhenAll(categoryTask, tagTask);
+
+            CategoryComboBox.ItemsSource = await categoryTask;
+            TagComboBox.ItemsSource = await tagTask;
+        }
+        private async void GetDataToUpdate(NewsArticleResponseDTO dto)
+        {
+            try
+            {
+                NewsIdTextBox.Text = _newsArticletoUpdate.NewsArticleId.ToString();
+                NewsIdTextBox.IsReadOnly = true;
                 NewsTitleTextBox.Text = _newsArticletoUpdate.NewsTitle;
                 NewsContentTextBox.Text = _newsArticletoUpdate.NewsContent;
-                CategoryComboBox.SelectedValue = _newsArticletoUpdate.CategoryName;
+
+                CategoryComboBox.SelectedValue = _categoryServices.getCategoryIdByCaetegoryName(dto.CategoryName).Result;
                 StatusCheckBox.IsChecked = _newsArticletoUpdate.NewsStatus == "Active";
                 CreateByTextBox.Text = _newsArticletoUpdate.CreatedBy;
                 _selectedTags = new ObservableCollection<Tag>(_newsArticletoUpdate.Tags);
                 ModifiedDateDatePicker.SelectedDate = _newsArticletoUpdate.ModifiedDate;
 
                 CreateButton.Content = "Update";
-            }
-            SelectedTagsListBox.ItemsSource = _selectedTags;
-        }
-
-        private async void LoadCategory()
-        {
-            try
+            }catch(Exception ex)
             {
-                var data = await _newsArticleServices.GetAllCategories();
-                CategoryComboBox.ItemsSource = data;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+                throw new Exception(ex.Message);
             }
         }
-
-        //private async void LoadCreateByName(short? id)
-        //{
-        //    try
-        //    {
-        //        var data = await _newsArticleServices.getCreateNameByCreateId(id);
-        //        if (data != null)
-        //        {
-        //            CreateByTextBox.Text = data;
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Not Found ID");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-        //}
 
         private void RemoveTagButton_Click(object sender, RoutedEventArgs e)
         {
@@ -107,7 +99,7 @@ namespace TrinhLekhoaWPF
             if(TagComboBox.SelectedItem != null)
             {
                 var selectTag = (Tag)TagComboBox.SelectedItem;
-                if (!_selectedTags.Contains(selectTag))
+                if (!_selectedTags.Any(t => t.TagId == selectTag.TagId))
                 {
                     _selectedTags.Add(selectTag);
                 }
@@ -122,16 +114,16 @@ namespace TrinhLekhoaWPF
                 var newId = NewsIdTextBox.Text;
                 var newsTitle = NewsTitleTextBox.Text;
                 var newsContent = NewsContentTextBox.Text;
-                var categoryName = (short)CategoryComboBox.SelectedValue;
+                var categoryId = (short)CategoryComboBox.SelectedValue;
                 var newsStatus = StatusCheckBox.IsChecked ?? false;
                 var createdDate = DateTime.Now;
                 var createdBy = (string)CreateByTextBox.Text;
-                var tagIds = SelectedTagsListBox.Items.Cast<Tag>().Select(t => t.TagId).ToList();
+                var tagIds = _selectedTags.Select(t => t.TagId).ToList();
                 var Modifield = ModifiedDateDatePicker.SelectedDate ?? DateTime.Now;
 
                 if(await _newsArticleServices.getById(newId) != null)
                 {
-                    MessageBox.Show("LMBV");
+                    MessageBox.Show("ID is exist!!!");
                 }
                 if (_newsArticletoUpdate == null)
                 {
@@ -142,7 +134,7 @@ namespace TrinhLekhoaWPF
                         NewsArticleId = newId,
                         NewsTitle = newsTitle,
                         NewsContent = newsContent,
-                        CategoryId = categoryName,
+                        CategoryId = categoryId,
                         NewsStatus = newsStatus,
                         CreatedDate = createdDate,
                         CreatedById = CreateById,
@@ -169,6 +161,7 @@ namespace TrinhLekhoaWPF
                         NewsTitle = newsTitle,
                         NewsContent = newsContent,
                         NewsStatus = newsStatus,
+                        CategoryId=categoryId,
                         CreatedDate = createdDate,
                         ModifiedDate = Modifield,
                         CreatedById = await _systemAccountServices.getAccountIdByAccountName(createdBy),

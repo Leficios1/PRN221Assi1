@@ -75,17 +75,6 @@ namespace TrinhLekhoaWPF
             }
         }
 
-        private void CloseWindow_Click(object sender, RoutedEventArgs e)
-        {
-            var staffWindow = Application.Current.Windows.OfType<StaffWindow>().FirstOrDefault();
-
-            if (staffWindow != null)
-            {
-                staffWindow.Show();
-                Application.Current.MainWindow.Close();
-            }
-        }
-
         private void UpdateCategory_Click(object sender, RoutedEventArgs e)
         {
             var selectCategory = (Category)CategoryDataGrid.SelectedItem;
