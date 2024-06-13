@@ -19,5 +19,6 @@ namespace Services.Services.Interface
         Task<string> getAccountName(string email);
         Task<SystemAccount> getAccountInfoByEmail(string email);
         Task<short> getAccountIdByAccountName(string name);
+        Task<SystemAccount> getAccountInfoById(short? id);
     }
 }

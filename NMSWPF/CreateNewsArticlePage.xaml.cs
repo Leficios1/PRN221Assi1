@@ -35,33 +35,54 @@ namespace TrinhLekhoaWPF
         private readonly ICategoryServices _categoryServices;
         private readonly ManageNewsArticlePage _manageNewsArticlePage;
         private readonly ITagServices _tagServices;
-        public CreateNewsArticlePage(INewsArticleServices newsArticleServices, ManageNewsArticlePage manageNewsArticlePage, NewsArticleResponseDTO newsArticle = null)
+        public CreateNewsArticlePage(INewsArticleServices newsArticleServices, ManageNewsArticlePage manageNewsArticlePage, NewsArticleResponseDTO newsArticletoUpdate = null)
         {
             InitializeComponent();
             _newsArticleServices = newsArticleServices;
-            _newsArticletoUpdate = newsArticle;
+            _manageNewsArticlePage = manageNewsArticlePage;
+            _newsArticletoUpdate = newsArticletoUpdate;
             _systemAccountServices = ((App)Application.Current).ServiceProvider.GetRequiredService<ISystemAccountServices>();
             _categoryServices = ((App)Application.Current).ServiceProvider.GetRequiredService<ICategoryServices>();
             _tagServices = ((App)Application.Current).ServiceProvider.GetRequiredService<ITagServices>();
-            _manageNewsArticlePage = manageNewsArticlePage;
 
             if (_newsArticletoUpdate != null)
             {
                 GetDataToUpdate(_newsArticletoUpdate);
             }
+            LoadCategoryAndTag();
             _selectedTags ??= new ObservableCollection<Tag>();
             SelectedTagsListBox.ItemsSource = _selectedTags;
         }
 
-        public async Task LoadCategoryAndTag()
+        private async void LoadCategoryAndTag()
         {
-            var categoryTask = _newsArticleServices.GetAllCategories();
-            var tagTask = _tagServices.getAllAsync();
-            
-            await Task.WhenAll(categoryTask, tagTask);
+            await Task.WhenAll(LoadCategory(), LoadTag());
+        }
 
-            CategoryComboBox.ItemsSource = await categoryTask;
-            TagComboBox.ItemsSource = await tagTask;
+        private async Task LoadCategory()
+        {
+            try
+            {
+                var data = await _categoryServices.getAllAsync();
+                CategoryComboBox.ItemsSource = data;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private async Task LoadTag()
+        {
+            try
+            {
+                var data = await _tagServices.getAllAsync();
+                TagComboBox.ItemsSource = data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         private async void GetDataToUpdate(NewsArticleResponseDTO dto)
         {
@@ -72,14 +93,17 @@ namespace TrinhLekhoaWPF
                 NewsTitleTextBox.Text = _newsArticletoUpdate.NewsTitle;
                 NewsContentTextBox.Text = _newsArticletoUpdate.NewsContent;
 
-                CategoryComboBox.SelectedValue = _categoryServices.getCategoryIdByCaetegoryName(dto.CategoryName).Result;
+                var categoryId = await _categoryServices.getCategoryIdByCaetegoryName(dto.CategoryName);
+                CategoryComboBox.SelectedValue = categoryId;
                 StatusCheckBox.IsChecked = _newsArticletoUpdate.NewsStatus == "Active";
                 CreateByTextBox.Text = _newsArticletoUpdate.CreatedBy;
                 _selectedTags = new ObservableCollection<Tag>(_newsArticletoUpdate.Tags);
+                SelectedTagsListBox.ItemsSource = _selectedTags;
                 ModifiedDateDatePicker.SelectedDate = _newsArticletoUpdate.ModifiedDate;
 
                 CreateButton.Content = "Update";
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -96,7 +120,7 @@ namespace TrinhLekhoaWPF
 
         private void AddTagButton_Click(object sender, RoutedEventArgs e)
         {
-            if(TagComboBox.SelectedItem != null)
+            if (TagComboBox.SelectedItem != null)
             {
                 var selectTag = (Tag)TagComboBox.SelectedItem;
                 if (!_selectedTags.Any(t => t.TagId == selectTag.TagId))
@@ -120,13 +144,14 @@ namespace TrinhLekhoaWPF
                 var createdBy = (string)CreateByTextBox.Text;
                 var tagIds = _selectedTags.Select(t => t.TagId).ToList();
                 var Modifield = ModifiedDateDatePicker.SelectedDate ?? DateTime.Now;
-
-                if(await _newsArticleServices.getById(newId) != null)
-                {
-                    MessageBox.Show("ID is exist!!!");
-                }
+                // Create Button
                 if (_newsArticletoUpdate == null)
                 {
+
+                    if (await _newsArticleServices.getById(newId) != null)
+                    {
+                        MessageBox.Show("ID is exist!!!");
+                    }
                     //var categoryId = await _categoryServices.getCategoryIdByCaetegoryName(categoryName);
                     var CreateById = await _systemAccountServices.getAccountIdByAccountName(createdBy);
                     var newNewsArticle = new NewsArticleRequestDTO
@@ -153,6 +178,7 @@ namespace TrinhLekhoaWPF
                         MessageBox.Show("New article is exist!!!");
                     }
                 }
+                //update Button
                 else
                 {
                     var updatedto = new NewsArticleRequestDTO
@@ -161,7 +187,7 @@ namespace TrinhLekhoaWPF
                         NewsTitle = newsTitle,
                         NewsContent = newsContent,
                         NewsStatus = newsStatus,
-                        CategoryId=categoryId,
+                        CategoryId = categoryId,
                         CreatedDate = createdDate,
                         ModifiedDate = Modifield,
                         CreatedById = await _systemAccountServices.getAccountIdByAccountName(createdBy),
@@ -170,6 +196,7 @@ namespace TrinhLekhoaWPF
                     };
                     await _newsArticleServices.UpdateNewsArticleAsync(updatedto);
                     MessageBox.Show("News article updated successfully!");
+                    NavigationService.GoBack();
                 }
             }
             catch (Exception ex)

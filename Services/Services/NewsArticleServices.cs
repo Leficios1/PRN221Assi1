@@ -198,13 +198,34 @@ namespace Services.Services
             newsArticle.CategoryId = dto.CategoryId;
             newsArticle.NewsStatus = dto.NewsStatus;
             newsArticle.ModifiedDate = dto.ModifiedDate;
-            newsArticle.Tags.Clear();
-            var tags = await _tagRepository.Get().Where(t => dto.Tags.Contains(t.TagId)).ToListAsync();
-            foreach (var tag in tags)
-            {
-                newsArticle.Tags.Add(tag);
-            }
+            var existingTags = await _tagRepository.Get()
+                .Where(t => t.NewsArticles.Any(n => n.NewsArticleId == newsArticle.NewsArticleId))
+                .ToListAsync();
 
+            var taginDTO = dto.Tags.ToList();
+
+            //This is tag need to check Update
+            var tagNeedToCheck = taginDTO.Except(existingTags.Select(t => t.TagId)).ToList();
+
+            //This is tag to remove
+            var tagToRemove = existingTags.Where(e => !taginDTO.Contains(e.TagId)).ToList();
+
+            foreach (var tag in tagNeedToCheck)
+            {
+                var flag = await _tagRepository.Get().SingleOrDefaultAsync(t => t.TagId == tag);
+                if(flag != null)
+                {
+                    newsArticle.Tags.Add(flag);
+                }
+            }
+            foreach(var tag in tagToRemove)
+            {
+                var tag1 = newsArticle.Tags.SingleOrDefault(t => t.TagId == tag.TagId);
+                if (tag1 != null)
+                {
+                    newsArticle.Tags.Remove(tag);
+                }
+            }
             _newsArticleRepository.Update(newsArticle);
             await _newsArticleRepository.SaveChangesAsync();
         }
@@ -276,7 +297,8 @@ namespace Services.Services
                     response.Add(dto);
                 }
                 return response;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

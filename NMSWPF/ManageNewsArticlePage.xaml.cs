@@ -62,20 +62,18 @@ namespace TrinhLekhoaWPF
             }
         }
 
-        private async void CreateButton_Click(object sender, RoutedEventArgs e)
+        private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             var createNewsArticle = new CreateNewsArticlePage(_newsArticleServices, this);
-            await createNewsArticle.LoadCategoryAndTag();
             this.NavigationService.Navigate(createNewsArticle);
         }
 
-        private async void UpdateButton_Click(object sender, RoutedEventArgs e)
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             var selectNewArticle = (NewsArticleResponseDTO)NewsArticlesDataGrid.SelectedItem;
             if (selectNewArticle != null)
             {
                 var updateNewsArticle = new CreateNewsArticlePage(_newsArticleServices, this, selectNewArticle);
-                await updateNewsArticle.LoadCategoryAndTag();
                 this.NavigationService.Navigate(updateNewsArticle);
             }
             else

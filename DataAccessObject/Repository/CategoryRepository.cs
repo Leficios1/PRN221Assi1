@@ -21,8 +21,14 @@ namespace DataAccessObject.Repository
 
         public async Task<List<Category>> GetAll()
         {
-            var data = await _context.Categories.ToListAsync();
-            return data;
+            try
+            {
+                var data = await _context.Categories.ToListAsync();
+                return data;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

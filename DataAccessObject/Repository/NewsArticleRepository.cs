@@ -37,7 +37,7 @@ namespace DataAccessObject.Repository
         {
             var newsArticle = await _context.NewsArticles
                                             .Where(x => x.CreatedById == id)
-                                            .SingleOrDefaultAsync();
+                                            .FirstOrDefaultAsync();
 
             return newsArticle != null;
         }

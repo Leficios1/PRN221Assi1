@@ -49,7 +49,7 @@ namespace Services.Services
         }
 
         public async Task<bool> deleteAccount(short id)
-        {
+     {
             try
             {
                 var account = await _systemAccountRepository.GetById(id);
@@ -85,6 +85,22 @@ namespace Services.Services
         {
             var data = await _systemAccountRepository.FindOne(x => x.AccountEmail.Equals(email));
             return data;
+        }
+
+        public async Task<SystemAccount> getAccountInfoById(short? id)
+        {
+            try
+            {
+                var systemAccount = await _systemAccountRepository.GetById(id);
+                if(systemAccount == null)
+                {
+                    throw new Exception($"Not found {id}");
+                }
+                return systemAccount;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<string> getAccountName(string email)

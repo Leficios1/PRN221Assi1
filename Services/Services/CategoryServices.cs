@@ -94,6 +94,12 @@ namespace Services.Services
             }
         }
 
+        public async Task<Category> getCategoryById(short Id)
+        {
+            var data = await _categoryRepository.GetById(Id);
+            return data;
+        }
+
         public async Task<short> getCategoryIdByCaetegoryName(string name)
         {
             try
@@ -111,7 +117,7 @@ namespace Services.Services
             try
             {
                 var data = await _categoryRepository.GetById(dto.CategoryId);
-                _mapper.Map(data, dto);
+                _mapper.Map(dto,data);
                 _categoryRepository.Update(data);
                 await _categoryRepository.SaveChangesAsync();
                 return data;

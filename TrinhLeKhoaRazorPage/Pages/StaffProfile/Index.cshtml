@@ -1,0 +1,21 @@
+﻿@page
+@model TrinhLeKhoaRazorPage.Pages.StaffProfile.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Profile</h1>
+
+@if (Model.SystemAccount != null)
+{
+    <div>
+        <h2>@Model.SystemAccount.AccountName</h2>
+        <p>Email: @Model.SystemAccount.AccountEmail</p>
+        <p>Password: @Model.SystemAccount.AccountPassword</p>
+        <p>Role: @Model.SystemAccount.AccountRole</p>
+    </div>
+    <div>
+        <a asp-page="./Edit" asp-route-id="@Model.SystemAccount.AccountId">Edit</a> 
+    </div>
+}
