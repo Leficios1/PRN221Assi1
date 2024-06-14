@@ -9,7 +9,7 @@ using BusinessObject.Model;
 using DataAccessObject.Model;
 using Services.Services.Interface;
 
-namespace TrinhLeKhoaRazorPage.Pages.Admin_Page
+namespace TrinhLeKhoaRazorPage.Pages.SystemAccountPage
 {
     public class DetailsModel : PageModel
     {

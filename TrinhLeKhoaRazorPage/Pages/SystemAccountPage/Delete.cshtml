@@ -1,12 +1,15 @@
 ﻿@page
-@model TrinhLeKhoaRazorPage.Pages.Admin_Page.DetailsModel
+@model TrinhLeKhoaRazorPage.Pages.SystemAccountPage.DeleteModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Delete";
+    Layout = "_Layout1";
+
 }
 
-<h1>Details</h1>
+<h1>Delete</h1>
 
+<h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>SystemAccount</h4>
     <hr />
@@ -36,8 +39,22 @@
             @Html.DisplayFor(model => model.SystemAccount.AccountPassword)
         </dd>
     </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="SystemAccount.AccountId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
 </div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.SystemAccount?.AccountId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
+
+@section Scripts{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            alert("@Model.ErrorMessage");
+            window.location.href = './Index';
+        });
+    </script>
+    }
+}

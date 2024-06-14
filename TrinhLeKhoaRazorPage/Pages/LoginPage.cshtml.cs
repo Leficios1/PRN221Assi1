@@ -41,7 +41,7 @@ namespace TrinhLeKhoaRazorPage.Pages
             if (flag)
             {
                 HttpContext.Session.SetString("UserEmail", email);
-                return RedirectToPage("Admin/Index");
+                return RedirectToPage("NewsArticlePage/Index");
             }else if(_adminAccount.Value.Email.Equals(email) && _adminAccount.Value.Password.Equals(password))
             {
                 HttpContext.Session.SetString("UserEmail", email);

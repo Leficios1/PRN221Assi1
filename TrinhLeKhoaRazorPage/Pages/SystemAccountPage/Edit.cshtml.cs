@@ -12,7 +12,7 @@ using Services.Services.Interface;
 using AutoMapper;
 using Services.DTO.Request;
 
-namespace TrinhLeKhoaRazorPage.Pages.Admin_Page
+namespace TrinhLeKhoaRazorPage.Pages.SystemAccountPage
 {
     public class EditModel : PageModel
     {

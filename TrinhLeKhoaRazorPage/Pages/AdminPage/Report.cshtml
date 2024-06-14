@@ -1,0 +1,44 @@
+﻿@page
+@model TrinhLeKhoaRazorPage.Pages.AdminPage.ReportModel
+@{
+    ViewData["Title"] = "News Statistics";
+    Layout = "_Layout1";
+}
+
+<h1>News Statistics</h1>
+
+<form method="get">
+    <div class="form-group">
+        <label for="StartDate">Start Date</label>
+        <input type="date" id="StartDate" name="StartDate" class="form-control" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="form-group">
+        <label for="EndDate">End Date</label>
+        <input type="date" id="EndDate" name="EndDate" class="form-control" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+    </div>
+    <button type="submit" class="btn btn-primary">Generate Report</button>
+</form>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Created Date</th>
+            <th>View Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var news in Model.NewsStatistics)
+        {
+            <tr>
+                <td>@news.NewsTitle</td>
+                <td>@news.CreatedDate</td>
+                <td>@news.NewsContent</td>
+                <td>@news.NewsStatus</td>
+                <td>@news.ModifiedDate</td>
+                <td>@news.CategoryName</td>
+                <td>@news.CreatedBy</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -8,5 +8,10 @@ namespace TrinhLeKhoaRazorPage.Pages.AdminPage
         public void OnGet()
         {
         }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/LoginPage");
+        }
     }
 }

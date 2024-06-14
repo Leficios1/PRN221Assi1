@@ -10,7 +10,7 @@ using DataAccessObject.Model;
 using Services.Services.Interface;
 using Services.DTO.Response;
 
-namespace TrinhLeKhoaRazorPage.Pages.Admin_Page
+namespace TrinhLeKhoaRazorPage.Pages.SystemAccountPage
 {
     public class IndexModel : PageModel
     {
@@ -26,6 +26,11 @@ namespace TrinhLeKhoaRazorPage.Pages.Admin_Page
         public async Task OnGetAsync()
         {
                 SystemAccount = await _systemAccountServices.getAllAsync();
+        }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/LoginPage");
         }
     }
 }

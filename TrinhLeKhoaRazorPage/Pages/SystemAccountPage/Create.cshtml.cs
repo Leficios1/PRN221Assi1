@@ -10,7 +10,7 @@ using DataAccessObject.Model;
 using Services.Services.Interface;
 using Services.DTO.Request;
 
-namespace TrinhLeKhoaRazorPage.Pages.Admin_Page
+namespace TrinhLeKhoaRazorPage.Pages.SystemAccountPage
 {
     public class CreateModel : PageModel
     {
