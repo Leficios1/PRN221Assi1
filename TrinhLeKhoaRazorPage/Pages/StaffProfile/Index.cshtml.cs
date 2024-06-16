@@ -42,5 +42,10 @@ namespace TrinhLeKhoaRazorPage.Pages.StaffProfile
             }
             return Page();
         }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/LoginPage");
+        }
     }
 }

@@ -22,6 +22,8 @@ namespace TrinhLeKhoaRazorPage.Pages.NewsArticlePage
 
         [BindProperty]
       public NewsArticle NewsArticle { get; set; } = default!;
+        //[TempData]
+        //public string ErrorMessage {  get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {

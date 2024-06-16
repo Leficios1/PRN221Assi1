@@ -57,7 +57,7 @@ namespace Services.Services
                 }
                 else
                 {
-                    var flag = await _newsArticleRepository.Get().Where(x => x.CategoryId == Id).SingleOrDefaultAsync();
+                    var flag = await _newsArticleRepository.Get().Where(x => x.CategoryId == Id).FirstOrDefaultAsync();
                     if (flag == null)
                     {
                         _categoryRepository.Delete(data);

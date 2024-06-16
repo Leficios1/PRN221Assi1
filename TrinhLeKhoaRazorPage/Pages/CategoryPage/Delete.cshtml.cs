@@ -26,6 +26,8 @@ namespace TrinhLeKhoaRazorPage.Pages.CategoryPage
         [BindProperty]
         public Category Category { get; set; } = default!;
 
+        [TempData]
+        public string ErrorMessage { get; set; }
         public async Task<IActionResult> OnGetAsync(short id)
         {
             var userRole = HttpContext.Session.GetString("Roles");
@@ -55,6 +57,7 @@ namespace TrinhLeKhoaRazorPage.Pages.CategoryPage
             }
             else
             {
+                ErrorMessage = "This Category has been News Article so can not deleted";
                 return Page();
                 // return RedirectToPage("./Index");
 

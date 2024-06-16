@@ -19,7 +19,7 @@ namespace TrinhLeKhoaRazorPage.Pages.AdminPage
 
         [BindProperty(SupportsGet = true)]
         public DateTime EndDate { get; set; }
-
+        public string ErrorMessage { get; set; }
         public List<NewsArticleResponseDTO> NewsStatistics { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
@@ -35,6 +35,10 @@ namespace TrinhLeKhoaRazorPage.Pages.AdminPage
                 EndDate = DateTime.Today;
             }
             NewsStatistics = await _newsArticleServices.createReport(StartDate, EndDate);
+            if(NewsStatistics == null)
+            {
+                ErrorMessage = "No data found for the selected period.";
+            }
             return Page();
         }
 

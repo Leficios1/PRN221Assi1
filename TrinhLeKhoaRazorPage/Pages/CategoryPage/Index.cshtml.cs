@@ -32,5 +32,10 @@ namespace TrinhLeKhoaRazorPage.Pages.CategoryPage
             Category = await _categoryServices.getAllAsync();
             return Page();
         }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/LoginPage");
+        }
     }
 }

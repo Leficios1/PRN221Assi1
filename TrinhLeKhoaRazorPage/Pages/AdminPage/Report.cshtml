@@ -19,6 +19,12 @@
     <button type="submit" class="btn btn-primary">Generate Report</button>
 </form>
 
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @Model.ErrorMessage
+    </div>
+}else{
 <table class="table table-striped mt-3">
     <thead>
         <tr>
@@ -42,3 +48,4 @@
         }
     </tbody>
 </table>
+}
