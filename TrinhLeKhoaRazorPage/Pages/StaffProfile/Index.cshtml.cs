@@ -26,7 +26,12 @@ namespace TrinhLeKhoaRazorPage.Pages.StaffProfile
         public async Task<IActionResult> OnGetAsync()
         {
             var email = HttpContext.Session.GetString("UserEmail");
-            if (string.IsNullOrEmpty(email))
+            var userRole = HttpContext.Session.GetString("Roles");
+            if (userRole != "Staff")
+            {
+                return RedirectToPage("/LoginPage");
+            }
+            else if (string.IsNullOrEmpty(email))
             {
                 return RedirectToPage("/LoginPage");
             }

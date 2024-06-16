@@ -23,6 +23,11 @@ namespace TrinhLeKhoaRazorPage.Pages.SystemAccountPage
 
         public IActionResult OnGet()
         {
+            var userRole = HttpContext.Session.GetString("Roles");
+            if (userRole != "Admin")
+            {
+                return RedirectToPage("/LoginPage");
+            }
             return Page();
         }
 

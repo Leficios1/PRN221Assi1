@@ -30,6 +30,11 @@ namespace TrinhLeKhoaRazorPage.Pages.StaffProfile
 
         public async Task<IActionResult> OnGetAsync(short? id)
         {
+            var userRole = HttpContext.Session.GetString("Roles");
+            if (userRole != "Staff")
+            {
+                return RedirectToPage("/LoginPage");
+            }
             if (id == null)
             {
                 return NotFound();

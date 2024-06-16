@@ -22,9 +22,15 @@ namespace TrinhLeKhoaRazorPage.Pages.CategoryPage
 
         public List<Category> Category { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            var userRole = HttpContext.Session.GetString("Roles");
+            if (userRole != "Staff")
+            {
+                return RedirectToPage("/LoginPage");
+            }
             Category = await _categoryServices.getAllAsync();
+            return Page();
         }
     }
 }

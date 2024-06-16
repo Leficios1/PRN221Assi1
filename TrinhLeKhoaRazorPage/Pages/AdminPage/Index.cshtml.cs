@@ -5,8 +5,14 @@ namespace TrinhLeKhoaRazorPage.Pages.AdminPage
 {
     public class IndexModel : PageModel
     {
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            var userRole = HttpContext.Session.GetString("Roles");
+            if (userRole != "Admin")
+            {
+                return RedirectToPage("/LoginPage");
+            }
+            return Page();
         }
         public IActionResult OnPostLogout()
         {

@@ -33,6 +33,11 @@ namespace TrinhLeKhoaRazorPage.Pages.NewsArticlePage
 
         public async Task<IActionResult> OnGet()
         {
+            var userRole = HttpContext.Session.GetString("Roles");
+            if (userRole != "Staff")
+            {
+                return RedirectToPage("/LoginPage");
+            }
             ViewData["CategoryId"] = new SelectList(await _categoryServices.getAllAsync(), "CategoryId", "CategoryDesciption");
             ViewData["CreatedById"] = new SelectList(await _systemAccountServices.getAllAsync(), "AccountId", "AccountName");
             return Page();

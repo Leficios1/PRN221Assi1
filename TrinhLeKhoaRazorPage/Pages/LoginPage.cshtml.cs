@@ -41,10 +41,12 @@ namespace TrinhLeKhoaRazorPage.Pages
             if (flag)
             {
                 HttpContext.Session.SetString("UserEmail", email);
+                HttpContext.Session.SetString("Roles", "Staff");
                 return RedirectToPage("NewsArticlePage/Index");
             }else if(_adminAccount.Value.Email.Equals(email) && _adminAccount.Value.Password.Equals(password))
             {
                 HttpContext.Session.SetString("UserEmail", email);
+                HttpContext.Session.SetString("Roles", "Admin");
                 return RedirectToPage("AdminPage/Index");
             }
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");

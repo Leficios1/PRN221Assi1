@@ -24,6 +24,12 @@ namespace TrinhLeKhoaRazorPage.Pages.NewsArticlePage
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
+            var userRole = HttpContext.Session.GetString("Roles");
+            if (userRole != "Staff")
+            {
+                return RedirectToPage("/LoginPage");
+            }
+
             if (id == null)
             {
                 return NotFound();

@@ -25,6 +25,11 @@ namespace TrinhLeKhoaRazorPage.Pages.CategoryPage
 
         public IActionResult OnGet()
         {
+            var userRole = HttpContext.Session.GetString("Roles");
+            if (userRole != "Staff")
+            {
+                return RedirectToPage("/LoginPage");
+            }
             return Page();
         }
 

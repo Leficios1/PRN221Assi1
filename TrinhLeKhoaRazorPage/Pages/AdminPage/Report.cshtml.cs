@@ -24,6 +24,11 @@ namespace TrinhLeKhoaRazorPage.Pages.AdminPage
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var userRole = HttpContext.Session.GetString("Roles");
+            if (userRole != "Admin")
+            {
+                return RedirectToPage("/LoginPage");
+            }
             if (StartDate == default(DateTime) || EndDate == default(DateTime))
             {
                 StartDate = DateTime.Today.AddMonths(-1);

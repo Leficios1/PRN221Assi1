@@ -9,6 +9,7 @@ using BusinessObject.Model;
 using DataAccessObject.Model;
 using Services.Services.Interface;
 using Services.DTO.Response;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrinhLeKhoaRazorPage.Pages.NewsArticlePage
 {
@@ -23,9 +24,18 @@ namespace TrinhLeKhoaRazorPage.Pages.NewsArticlePage
 
         public   List<NewsArticleResponseDTO> NewsArticle { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            NewsArticle = await _newsArticleServices.getAll();
+            var userRole = HttpContext.Session.GetString("Roles");
+            if (userRole == "Staff")
+            {
+                NewsArticle = await _newsArticleServices.getAll();
+                return Page();
+            }
+            else
+            {
+                return RedirectToPage("/LoginPage");
+            }
         }
     }
 }

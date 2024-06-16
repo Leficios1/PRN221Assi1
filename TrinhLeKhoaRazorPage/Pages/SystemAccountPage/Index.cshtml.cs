@@ -23,9 +23,15 @@ namespace TrinhLeKhoaRazorPage.Pages.SystemAccountPage
 
         public List<SystemAccountResponseDTO> SystemAccount { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-                SystemAccount = await _systemAccountServices.getAllAsync();
+            var userRole = HttpContext.Session.GetString("Roles");
+            if (userRole != "Admin")
+            {
+                return RedirectToPage("/LoginPage");
+            }
+            SystemAccount = await _systemAccountServices.getAllAsync();
+            return Page();
         }
         public IActionResult OnPostLogout()
         {

@@ -28,7 +28,11 @@ namespace TrinhLeKhoaRazorPage.Pages.CategoryPage
 
         public async Task<IActionResult> OnGetAsync(short id)
         {
-
+            var userRole = HttpContext.Session.GetString("Roles");
+            if (userRole != "Staff")
+            {
+                return RedirectToPage("/LoginPage");
+            }
             var category = await _categoryServices.getCategoryById(id);
 
             if (category == null)

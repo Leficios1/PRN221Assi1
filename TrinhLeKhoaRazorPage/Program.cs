@@ -35,6 +35,7 @@ namespace TrinhLeKhoaRazorPage
 
             app.UseSession();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapRazorPages();
